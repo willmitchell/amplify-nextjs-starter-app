@@ -1,4 +1,4 @@
-import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
+import {type ClientSchema, a, defineData} from '@aws-amplify/backend';
 
 /*== STEP 1 ===============================================================
 The section below creates a Todo database table with a "content" field. Try
@@ -8,48 +8,31 @@ specify that owners, authenticated via your Auth resource can "create",
 authenticated via an API key, can only "read" records.
 =========================================================================*/
 const schema = a.schema({
-  Todo: a
-    .model({
-      content: a.string(),
-    })
-    .authorization([a.allow.owner(), a.allow.public().to(['read'])]),
+    Todo: a
+        .model({
+            content: a.string(),
+        })
+        .authorization([a.allow.owner(), a.allow.public().to(['read'])]),
 
-  Prices: a.model({
-    new_bottle_price: a.float().required(),
-    exchange_bottle_price: a.float(),
-    return_bottle_price: a.float().required(),
-    created_at: a.timestamp().required().default(() => new Date())
-  }).authorization([a.allow.owner(), a.allow.public().to(['read'])]),
-
-    Orders: a.model({
-        user_id: a.string().required(),
-        new_bottle: a.integer().required(),
-        exchange_bottle: a.integer().required(),
-        return_bottle: a.integer().required(),
-        total_price: a.float().required(),
-        created_at: a.timestamp().required().default(() => new Date())
+    Prices: a.model({
+        new_bottle_price: a.float(),
+        exchange_bottle_price: a.float(),
+        return_bottle_price: a.float(),
     }).authorization([a.allow.owner(), a.allow.public().to(['read'])]),
 
-    Users: a.model({
-        name: a.string().required(),
-        email: a.string(),
-        phone: a.string().required(),
-        address: a.string().required(),
-        created_at: a.timestamp().required().default(() => new Date())
-    }).authorization([a.allow.owner(), a.allow.public().to(['read'])]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
 
 export const data = defineData({
-  schema,
-  authorizationModes: {
-    defaultAuthorizationMode: 'apiKey',
-    // API Key is used for a.allow.public() rules
-    apiKeyAuthorizationMode: {
-      expiresInDays: 30,
+    schema,
+    authorizationModes: {
+        defaultAuthorizationMode: 'apiKey',
+        // API Key is used for a.allow.public() rules
+        apiKeyAuthorizationMode: {
+            expiresInDays: 30,
+        },
     },
-  },
 });
 
 /*== STEP 2 ===============================================================
