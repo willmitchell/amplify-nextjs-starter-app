@@ -20,6 +20,28 @@ const schema = a.schema({
         return_bottle_price: a.float(),
     }).authorization([a.allow.owner(), a.allow.public().to(['read'])]),
 
+    Orders: a.model({
+        user_id: a.string(),
+        new_bottle_quantity: a.integer(),
+        exchange_bottle_quantity: a.integer(),
+        return_bottle_quantity: a.integer(),
+        total_price: a.float(),
+    }).authorization([a.allow.owner(), a.allow.public().to(['read'])]),
+
+    Users: a.model({
+        name: a.string(),
+        email: a.string(),
+        phone: a.string(),
+        address: a.string(),
+    }).authorization([a.allow.owner(), a.allow.public().to(['read'])]),
+
+    Payments: a.model({
+        user_id: a.string(),
+        order_id: a.string(),
+        payment_id: a.string(),
+        payment_status: a.string(),
+        payment_amount: a.float(),
+    }).authorization([a.allow.owner(), a.allow.public().to(['read'])]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
